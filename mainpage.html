@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>OMI — One Mind Intelligence</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #030405;
+            --text: #f4f7fb;
+            --muted: #8c929c;
+            --line: rgba(255, 255, 255, 0.13);
+            --blue: #8ec8ff;
+            --blue-glow: rgba(91, 173, 255, 0.45);
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        body {
+            position: relative;
+        }
+
+        /* =========================
+       BACKGROUND
+    ========================= */
+
+        .background {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 50% 38%,
+                    rgba(46, 106, 160, 0.12),
+                    transparent 27%),
+                radial-gradient(circle at 50% 50%,
+                    rgba(255, 255, 255, 0.025),
+                    transparent 45%),
+                #030405;
+        }
+
+        /* =========================
+       NAVBAR
+    ========================= */
+
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 90px;
+
+            padding: 0 4vw;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            z-index: 20;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand-name {
+            font-size: 26px;
+            font-weight: 500;
+            letter-spacing: 8px;
+        }
+
+        .brand-line {
+            width: 1px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .brand-subtitle {
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: #9ba1aa;
+        }
+
+        .menu {
+            width: 42px;
+            height: 42px;
+
+            border: none;
+            background: transparent;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+
+            cursor: pointer;
+        }
+
+        .menu span {
+            width: 19px;
+            height: 1px;
+            background: #dce4ec;
+            transition: 0.3s ease;
+        }
+
+        .menu:hover span:first-child {
+            width: 13px;
+        }
+
+        .menu:hover span:last-child {
+            width: 13px;
+        }
+
+        /* =========================
+       MAIN
+    ========================= */
+
+        .main {
+            position: relative;
+
+            width: 100%;
+            height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            padding: 90px 20px 70px;
+        }
+
+        /* =========================
+       OMI CORE
+    ========================= */
+
+        .core-area {
+            position: relative;
+
+            width: min(620px, 75vw);
+            height: 270px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .core {
+            position: relative;
+
+            width: 210px;
+            height: 210px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(circle at 50% 50%,
+                    rgba(130, 190, 255, 0.08),
+                    rgba(10, 15, 20, 0.1) 50%,
+                    transparent 72%);
+
+            border: 1px solid rgba(183, 220, 255, 0.8);
+
+            box-shadow:
+                0 0 15px rgba(100, 180, 255, 0.35),
+                0 0 50px rgba(50, 140, 230, 0.15),
+                inset 0 0 35px rgba(100, 180, 255, 0.06);
+
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        .core::before {
+            content: "";
+
+            position: absolute;
+            inset: -12px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(117, 190, 255, 0.12);
+
+            animation: rotate 15s linear infinite;
+        }
+
+        .core::after {
+            content: "";
+
+            position: absolute;
+            inset: -25px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(117, 190, 255, 0.05);
+
+            animation: rotateReverse 22s linear infinite;
+        }
+
+        /* subtle inner light */
+
+        .core-light {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%);
+
+            border-radius: 50%;
+
+            background: rgba(110, 185, 255, 0.03);
+
+            box-shadow:
+                0 0 50px rgba(90, 170, 255, 0.15);
+        }
+
+        /* =========================
+       WAVEFORM
+    ========================= */
+
+        .wave {
+            position: absolute;
+
+            width: 100%;
+            height: 100px;
+
+            left: 0;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            overflow: visible;
+
+            pointer-events: none;
+        }
+
+        .wave path {
+            fill: none;
+
+            stroke: rgba(140, 200, 255, 0.4);
+
+            stroke-width: 1;
+
+            filter: drop-shadow(0 0 5px rgba(100, 180, 255, 0.4));
+
+            animation: waveMove 5s ease-in-out infinite;
+        }
+
+        .wave .wave2 {
+            stroke: rgba(130, 190, 255, 0.12);
+            animation-duration: 7s;
+            animation-direction: reverse;
+        }
+
+        /* =========================
+       GREETING
+    ========================= */
+
+        .greeting {
+            text-align: center;
+
+            margin-top: -8px;
+
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .greeting h1 {
+            font-size: clamp(38px, 4vw, 58px);
+
+            font-weight: 300;
+
+            letter-spacing: -1.5px;
+
+            margin-bottom: 15px;
+        }
+
+        .greeting p {
+            color: var(--muted);
+
+            font-size: clamp(16px, 1.5vw, 20px);
+
+            letter-spacing: 4px;
+
+            font-weight: 300;
+        }
+
+        /* =========================
+       INPUT
+    ========================= */
+
+        .input-wrapper {
+            width: min(850px, 90vw);
+
+            margin-top: 45px;
+        }
+
+        .input-box {
+            width: 100%;
+            height: 80px;
+
+            display: flex;
+            align-items: center;
+
+            border: 1px solid var(--line);
+
+            border-radius: 45px;
+
+            background: rgba(15, 17, 20, 0.72);
+
+            backdrop-filter: blur(20px);
+
+            padding: 0 10px 0 28px;
+
+            transition:
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        .input-box:focus-within {
+            border-color: rgba(140, 200, 255, 0.35);
+
+            box-shadow:
+                0 0 30px rgba(80, 150, 220, 0.07);
+        }
+
+        .attach {
+            font-size: 25px;
+
+            color: #b7bec8;
+
+            margin-right: 20px;
+
+            transform: rotate(-40deg);
+
+            cursor: pointer;
+        }
+
+        .divider {
+            width: 1px;
+            height: 27px;
+
+            background: rgba(255, 255, 255, 0.12);
+
+            margin-right: 20px;
+        }
+
+        #prompt {
+            flex: 1;
+
+            height: 100%;
+
+            border: none;
+            outline: none;
+
+            background: transparent;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-family: inherit;
+        }
+
+        #prompt::placeholder {
+            color: #777e88;
+        }
+
+        .mic {
+            width: 58px;
+            height: 58px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            background: rgba(255, 255, 255, 0.06);
+
+            color: #e9f2fa;
+
+            font-size: 23px;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transition: 0.25s ease;
+        }
+
+        .mic:hover {
+            background: rgba(100, 180, 255, 0.13);
+
+            box-shadow:
+                0 0 25px rgba(80, 160, 255, 0.2);
+        }
+
+        .mic.active {
+            background: rgba(70, 150, 255, 0.2);
+
+            box-shadow:
+                0 0 30px rgba(70, 160, 255, 0.45);
+        }
+
+        /* =========================
+       VOICE HINT
+    ========================= */
+
+        .voice-hint {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 18px;
+
+            margin-top: 20px;
+
+            color: #747b85;
+
+            font-size: 13px;
+
+            letter-spacing: 1px;
+        }
+
+        .voice-hint::before,
+        .voice-hint::after {
+            content: "";
+
+            width: 65px;
+            height: 1px;
+
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .space {
+            padding: 5px 10px;
+
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            border-radius: 5px;
+
+            color: #b7bec6;
+
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* =========================
+       FOOTER
+    ========================= */
+
+        .footer-status {
+            position: fixed;
+
+            bottom: 30px;
+            right: 4vw;
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            color: #7d858e;
+
+            font-size: 13px;
+
+            letter-spacing: 1px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #75bfff;
+
+            box-shadow:
+                0 0 10px rgba(100, 190, 255, 0.8);
+
+            animation: pulse 2s infinite;
+        }
+
+        /* =========================
+       MENU PANEL
+    ========================= */
+
+        .menu-panel {
+            position: fixed;
+
+            top: 85px;
+            right: 4vw;
+
+            width: 230px;
+
+            padding: 20px;
+
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            border-radius: 16px;
+
+            background: rgba(10, 12, 15, 0.92);
+
+            backdrop-filter: blur(20px);
+
+            opacity: 0;
+            pointer-events: none;
+
+            transform: translateY(-10px);
+
+            transition: 0.25s ease;
+
+            z-index: 30;
+        }
+
+        .menu-panel.open {
+            opacity: 1;
+
+            pointer-events: auto;
+
+            transform: translateY(0);
+        }
+
+        .menu-panel button {
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+
+            background: transparent;
+
+            color: #aeb5be;
+
+            text-align: left;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-family: inherit;
+
+            transition: 0.2s;
+        }
+
+        .menu-panel button:hover {
+            background: rgba(255, 255, 255, 0.05);
+
+            color: white;
+        }
+
+        /* =========================
+       ANIMATIONS
+    ========================= */
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                transform: scale(0.98);
+
+                box-shadow:
+                    0 0 15px rgba(100, 180, 255, 0.25),
+                    0 0 45px rgba(50, 140, 230, 0.12),
+                    inset 0 0 35px rgba(100, 180, 255, 0.05);
+            }
+
+            50% {
+                transform: scale(1.02);
+
+                box-shadow:
+                    0 0 25px rgba(100, 190, 255, 0.45),
+                    0 0 70px rgba(50, 140, 230, 0.18),
+                    inset 0 0 45px rgba(100, 180, 255, 0.08);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotateReverse {
+            from {
+                transform: rotate(360deg);
+            }
+
+            to {
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes waveMove {
+
+            0%,
+            100% {
+                transform: scaleY(0.8);
+            }
+
+            50% {
+                transform: scaleY(1.25);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================
+       TABLET
+    ========================= */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                height: 75px;
+                padding: 0 24px;
+            }
+
+            .brand-name {
+                font-size: 21px;
+                letter-spacing: 6px;
+            }
+
+            .brand-line {
+                height: 20px;
+            }
+
+            .brand-subtitle {
+                font-size: 10px;
+                letter-spacing: 1.5px;
+            }
+
+            .core-area {
+                width: 95vw;
+                height: 220px;
+            }
+
+            .core {
+                width: 165px;
+                height: 165px;
+            }
+
+            .greeting h1 {
+                font-size: 40px;
+            }
+
+            .greeting p {
+                font-size: 14px;
+                letter-spacing: 2px;
+            }
+
+            .input-wrapper {
+                width: 94vw;
+                margin-top: 35px;
+            }
+
+            .input-box {
+                height: 68px;
+                padding-left: 20px;
+            }
+
+            .mic {
+                width: 50px;
+                height: 50px;
+            }
+
+            .voice-hint::before,
+            .voice-hint::after {
+                width: 35px;
+            }
+
+            .footer-status {
+                bottom: 18px;
+                right: 20px;
+            }
+        }
+
+        /* =========================
+       MOBILE
+    ========================= */
+
+        @media (max-width: 480px) {
+
+            body {
+                overflow: hidden;
+            }
+
+            .navbar {
+                padding: 0 18px;
+            }
+
+            .brand {
+                gap: 11px;
+            }
+
+            .brand-name {
+                font-size: 18px;
+                letter-spacing: 5px;
+            }
+
+            .brand-line {
+                height: 17px;
+            }
+
+            .brand-subtitle {
+                display: none;
+            }
+
+            .main {
+                padding-top: 65px;
+            }
+
+            .core-area {
+                height: 180px;
+                margin-bottom: 25px;
+            }
+
+            .core {
+                width: 130px;
+                height: 130px;
+            }
+
+            .core::before {
+                inset: -8px;
+            }
+
+            .core::after {
+                inset: -16px;
+            }
+
+            .greeting h1 {
+                font-size: 31px;
+
+                letter-spacing: -0.8px;
+            }
+
+            .greeting p {
+                font-size: 12px;
+
+                letter-spacing: 1.5px;
+            }
+
+            .input-wrapper {
+                margin-top: 32px;
+            }
+
+            .input-box {
+                height: 62px;
+
+                padding-left: 18px;
+                padding-right: 6px;
+            }
+
+            .attach {
+                font-size: 20px;
+                margin-right: 13px;
+            }
+
+            .divider {
+                margin-right: 13px;
+                height: 22px;
+            }
+
+            #prompt {
+                font-size: 14px;
+            }
+
+            .mic {
+                width: 50px;
+                height: 50px;
+
+                font-size: 20px;
+            }
+
+            .voice-hint {
+                font-size: 11px;
+                gap: 9px;
+            }
+
+            .voice-hint::before,
+            .voice-hint::after {
+                display: none;
+            }
+
+            .footer-status {
+                display: none;
+            }
+
+            .wave {
+                width: 130%;
+                left: -15%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="background"></div>
+
+    <!-- NAVIGATION -->
+
+    <nav class="navbar">
+
+        <div class="brand">
+
+            <div class="brand-name">
+                OMI
+            </div>
+
+            <div class="brand-line"></div>
+
+            <div class="brand-subtitle">
+                One Mind Intelligence
+            </div>
+
+        </div>
+
+        <button class="menu" id="menuButton">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+    </nav>
+
+
+    <!-- MENU -->
+
+    <div class="menu-panel" id="menuPanel">
+
+        <button>New conversation</button>
+        <button>Conversation history</button>
+        <button>Connected apps</button>
+        <button>Settings</button>
+
+    </div>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <!-- OMI CORE -->
+
+        <div class="core-area">
+
+            <svg class="wave" viewBox="0 0 800 100" preserveAspectRatio="none">
+
+                <path d="
+            M0 50
+            C80 50 90 25 160 50
+            S250 75 320 50
+            S400 25 470 50
+            S560 75 630 50
+            S720 25 800 50
+          " />
+
+                <path class="wave2" d="
+            M0 50
+            C100 70 120 30 200 50
+            S300 70 400 50
+            S500 30 600 50
+            S700 70 800 50
+          " />
+
+            </svg>
+
+
+            <div class="core">
+
+                <div class="core-light"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- GREETING -->
+
+        <section class="greeting">
+
+            <h1>
+                Good evening.
+            </h1>
+
+            <p>
+                How can I help you today?
+            </p>
+
+        </section>
+
+
+        <!-- INPUT -->
+
+        <div class="input-wrapper">
+
+            <form class="input-box" id="omiForm">
+
+                <div class="attach">
+                    ⌕
+                </div>
+
+                <div class="divider"></div>
+
+                <input id="prompt" type="text" autocomplete="off" placeholder="Ask OMI anything..." />
+
+                <button type="button" class="mic" id="micButton">
+                    🎙
+                </button>
+
+            </form>
+
+
+            <div class="voice-hint">
+
+                <span>or press</span>
+
+                <span class="space">
+                    Space
+                </span>
+
+                <span>to talk</span>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- STATUS -->
+
+    <div class="footer-status">
+
+        <span class="status-dot"></span>
+
+        <span>
+            Always here.
+        </span>
+
+    </div>
+
+
+    <script>
+
+        /* =========================
+           MENU
+        ========================= */
+
+        const menuButton =
+            document.getElementById("menuButton");
+
+        const menuPanel =
+            document.getElementById("menuPanel");
+
+        menuButton.addEventListener("click", () => {
+
+            menuPanel.classList.toggle("open");
+
+        });
+
+
+        /* =========================
+           INPUT
+        ========================= */
+
+        const form =
+            document.getElementById("omiForm");
+
+        const input =
+            document.getElementById("prompt");
+
+        form.addEventListener("submit", (event) => {
+
+            event.preventDefault();
+
+            const message =
+                input.value.trim();
+
+            if (!message) return;
+
+            console.log("User:", message);
+
+            /*
+              Later:
+      
+              fetch("/api/agent", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  message
+                })
+              })
+            */
+
+            input.value = "";
+
+        });
+
+
+        /* =========================
+           SPACE TO TALK
+        ========================= */
+
+        document.addEventListener("keydown", (event) => {
+
+            if (
+                event.code === "Space" &&
+                document.activeElement !== input
+            ) {
+
+                event.preventDefault();
+
+                startVoice();
+
+            }
+
+        });
+
+
+        /* =========================
+           VOICE
+        ========================= */
+
+        const micButton =
+            document.getElementById("micButton");
+
+        let listening = false;
+
+        micButton.addEventListener("click", () => {
+
+            startVoice();
+
+        });
+
+
+        function startVoice() {
+
+            if (listening) return;
+
+            listening = true;
+
+            micButton.classList.add("active");
+
+            /*
+              Browser speech recognition.
+      
+              This will be replaced later
+              with the actual OMI voice system.
+            */
+
+            const SpeechRecognition =
+                window.SpeechRecognition ||
+                window.webkitSpeechRecognition;
+
+            if (!SpeechRecognition) {
+
+                console.log(
+                    "Speech recognition not supported."
+                );
+
+                listening = false;
+
+                micButton.classList.remove("active");
+
+                return;
+
+            }
+
+            const recognition =
+                new SpeechRecognition();
+
+            recognition.lang = "en-IN";
+
+            recognition.interimResults = false;
+
+            recognition.start();
+
+
+            recognition.onresult = (event) => {
+
+                const transcript =
+                    event.results[0][0].transcript;
+
+                input.value = transcript;
+
+                console.log(
+                    "Voice input:",
+                    transcript
+                );
+
+            };
+
+
+            recognition.onend = () => {
+
+                listening = false;
+
+                micButton.classList.remove("active");
+
+            };
+
+        }
+
+    </script>
+
+</body>
+
+</html>
