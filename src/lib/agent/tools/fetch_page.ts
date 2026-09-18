@@ -35,7 +35,8 @@ export const fetchPageTool: AgentTool = {
     }
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
+    const fetchTimeout = parseInt(process.env.FETCH_TIMEOUT_MS || '6000', 10);
+    const timeout = setTimeout(() => controller.abort(), fetchTimeout);
 
     try {
       const res = await fetch(args.url, {

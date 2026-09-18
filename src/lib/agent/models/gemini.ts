@@ -10,7 +10,7 @@ export class GeminiAdapter implements ModelAdapter {
     outPerMTok: 0.30,
   };
 
-  constructor(apiKey: string, modelName = 'gemini-3.5-flash') {
+  constructor(apiKey: string, modelName = 'gemini-3.5-flash-lite') {
     this.apiKey = apiKey;
     this.modelName = modelName;
   }
@@ -26,12 +26,12 @@ export class GeminiAdapter implements ModelAdapter {
     opts?: { signal?: AbortSignal; model?: string }
   ): AsyncIterable<ModelDelta> {
     const primaryModel = opts?.model || this.modelName;
-    const fallbackModel = 'gemini-3.5-flash-lite';
+    const fallbackModel = process.env.FALLBACK_MODEL || 'gemini-3.5-flash';
 
     try {
       yield* this.streamFromModel(primaryModel, messages, tools, opts?.signal);
     } catch (err: any) {
-      // If primary (e.g. gemini-1.5-pro) hits quota or rate limit, automatically failover to flash
+      // If primary hits quota or rate limit, automatically failover
       if (primaryModel !== fallbackModel) {
         console.warn(`Gemini ${primaryModel} error: ${err.message}. Retrying with ${fallbackModel}...`);
         yield* this.streamFromModel(fallbackModel, messages, tools, opts?.signal);
